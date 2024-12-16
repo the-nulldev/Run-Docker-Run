@@ -18,9 +18,6 @@ class DockerTest : StageTest<String>() {
         val program = TestedProgram()
         val output = program.start().trim()
 
-        // Print debug information (optional)
-        println("Program output: $output")
-
         // Check if the required image exists in the Docker system
         return if (isImagePresent(requiredImageTag)) {
             CheckResult.correct()
@@ -40,10 +37,19 @@ class DockerTest : StageTest<String>() {
         val argument = if (isWindows) "/c" else "-c"
 
         // Run the `docker images` command to list all images
-        val processBuilder = ProcessBuilder(shell, argument, "docker images --format '{{.Repository}}:{{.Tag}}'")
+        val processBuilder = ProcessBuilder(shell, argument, "docker images --format \"{{.Repository}}:{{.Tag}}\"")
         val process = processBuilder.start()
-        val output = BufferedReader(InputStreamReader(process.inputStream)).readText()
-        process.waitFor()
+
+        // Capture both stdout and stderr
+        val output = BufferedReader(InputStreamReader(process.inputStream)).readText().trim()
+
+        // Wait for the process to complete
+        val exitCode = process.waitFor()
+
+        // Check if the process executed successfully
+        if (exitCode != 0) {
+            return false
+        }
 
         // Check if the image is present in the output
         return output.lines().any { it.trim() == imageTag }
