@@ -1,0 +1,137 @@
+<h2>Description</h2>
+
+<p>Docker is an essential tool in modern software development. It enablies developers to create portable, scalable, and efficient applications. In this project, you will containerize a simple Kotlin-based Spring Boot web application. This app greets users with a personalized message and displays fun facts about Kotlin, Docker, and Spring Boot when a button is clicked. Go ahead and download this <a href="https://cogniterra.org/media/attachments/lesson/28987/hyper-web-app.zip" rel="noopener noreferrer nofollow">awesome application</a>. It has the following structure:</p>
+
+<pre>
+<code class="language-json">hyper-web-app/
+├── src/
+│   └── main/
+│       └── kotlin/
+│           └── com/
+│               └── example/
+│                   └── hyperwebapp/
+│                       ├── HyperAppApplication.kt
+├── resources/
+│   ├── templates/
+│   │   └── index.html
+│   ├── static/
+│   │   ├── styles.css
+├── build.gradle
+├── settings.gradle
+├── gradlew
+├── gradlew.bat
+└── README.md
+</code></pre>
+
+<p>In this stage, you will lay the foundation for future stages. You&#39;ll create a <code>Dockerfile</code> and <code>.dockerignore</code> file, and pull the necessary base images for JVM-based applications. The <code>Dockerfile</code> is a key component in Docker workflows, defining the steps required to build and package an application into a container. The <code>.dockerignore</code> file is equally important, as it helps optimize your build process by excluding unnecessary files and directories from the Docker build context. You can add entries such as:</p>
+
+<pre>
+<code class="language-bash"># Gradle build files and directories
+.gradle
+build/
+
+# IDE-specific files
+.idea/
+*.iml
+
+# Operating system-specific files
+.DS_Store
+Thumbs.db
+
+# Logs and temporary files
+*.log
+tmp/
+
+# The Dockerfile and .dockerignore themselves
+Dockerfile
+.dockerignore
+</code></pre>
+
+<p>By completing this stage, you will learn how to set up a <code>Dockerfile</code>, configure a <code>.dockerignore</code> file, and pull base images.</p>
+
+<p>While the <code>eclipse-temurin</code> images are recommended, you are free to experiment with other JVM-based images such as <code>amazoncorretto</code> or <code>openjdk</code>.</p>
+
+<h2>Objectives</h2>
+
+<ol>
+    <li>
+        <p>Download and extract the Project Files:</p>
+
+        <ul>
+            <li><a href="https://cogniterra.org/media/attachments/lesson/28987/hyper-web-app.zip" rel="noopener noreferrer nofollow">Download</a> and extract the provided Spring Boot project into a separate folder to avoid conflicts with the project files.</li>
+            <li>The project folder contains the necessary application files for a simple Spring Boot application. </li>
+        </ul>
+    </li>
+    <li>
+        <p>Create the Dockerfile:</p>
+
+        <ul>
+            <li>In the root directory of the extracted application, create a file named <code>Dockerfile</code> (no extension);</li>
+            <li>Add two instructions in the <code>Dockerfile</code> which specify the base images required for building and packaging the application:
+                <ul>
+                    <li>A build stage that uses a JVM-based image with the JDK to compile the application such as eclipse-temurin:21-jdk;</li>
+                    <li>A packaging stage that uses a JVM-based image with the JRE to run the application such as eclipse-temurin:21-jre;</li>
+                    <li>You can use any JVM-based base image such as <code>eclipse-temurin</code>, <code>amazoncorretto</code>, or <code>openjdk</code>;</li>
+                </ul>
+            </li>
+        </ul>
+    </li>
+    <li>
+        <p>Create the .dockerignore file:</p>
+
+        <ul>
+            <li>In the root directory of the project, create a file named <code>.dockerignore</code> (no extension);</li>
+            <li>Add files to be excluded from the Docker build context;</li>
+        </ul>
+    </li>
+    <li>Pull the images:
+        <ul>
+            <li>Use the appropriate command to pull the base images from Dockerhub;</li>
+            <li>Verify that the images were downloaded and are available locally.</li>
+        </ul>
+    </li>
+</ol>
+
+<p>By completing this stage, you will have a functional <code>Dockerfile</code> and the necessary images locally. This serves as the foundation for building and running the Spring Boot application in the next stages.</p>
+
+To do this project docker platform needs to be installed on your system. You can install <a href="https://docs.docker.com/desktop/" rel="noopener noreferrer nofollow">Docker Desktop</a>&nbsp;which is an easy-to-install application for your Mac, Windows, or Linux environment that enables you to build and share containerized applications and microservices.</p>
+
+<p>On some Linux distributions, you may need to add users to the docker group to pass the tests. You can do this by running the following command:</p>
+<code class="language-bash">sudo usermod -aG docker $USER</code>
+
+<h2>Examples</h2>
+
+<p>Here are some examples that illustrate how the project should behave and be structured during this stage:</p>
+
+<p><strong>Example 1: Project structure:</strong></p>
+
+<pre>
+<code class="language-bash">hyper-web-app/
+├── Dockerfile
+├── .dockerignore
+├── src/
+│   └── main/
+│       └── kotlin/
+│           └── com/
+│               └── example/
+│                   └── hyperwebapp/
+│                       ├── HyperAppApplication.kt
+├── resources/
+│   ├── templates/
+│   │   └── index.html
+│   ├── static/
+│   │   ├── styles.css
+├── build.gradle
+├── settings.gradle
+├── gradlew
+├── gradlew.bat
+└── README.md</code></pre>
+
+<p><strong>Example 2: Verifying Docker Images:</strong></p>
+
+<pre>
+<code class="language-bash">$ docker images
+
+REPOSITORY          TAG            IMAGE ID       CREATED        SIZE
+&lt;base-image-1&gt;      &lt;tag&gt;          &lt;image-id&gt;     &lt;time&gt;         &lt;size&gt;
+&lt;base-image-2&gt;      &lt;tag&gt;          &lt;image-id&gt;     &lt;time&gt;         &lt;size&gt;</code></pre>

@@ -1,0 +1,38 @@
+<h2>Description</h2>
+
+<p>You are at the most essential stage of your project. In this stage, you&#39;ll add more instructions to your <code>Dockerfile</code>, which are needed&nbsp; to assemble a Docker image. The <code>Dockerfile</code> will utilize a multi-stage build to first compile and package the application and then prepare it for deployment using a lightweight runtime environment.</p>
+
+<p>This stage focuses on setting up the <code>Dockerfile</code> with the necessary steps to build and package your Kotlin-based Spring Boot application. Be aware that only the existence of the <code>Dockerfile</code> and its instructions will be tested at this stage. We will test the running container and its behavior in the following stages.</p>
+
+<h2>Objectives</h2>
+
+<p>Create a Multi-Stage Dockerfile:</p>
+
+<ul>
+  <li>Stage 1 (Build):
+    <ul>
+      <li>Use any valid JVM-based base image with a JDK to build your application (e.g., <code>eclipse-temurin</code>, <code>amazoncorretto</code>, <code>openjdk</code>).</li>
+      <li>Set the working directory inside the container to <code>/app</code>.</li>
+      <li>Use the appropriate instruction to:
+        <ul>
+          <li>Transfer the Gradle Wrapper files (<code>gradlew</code>, <code>gradlew.bat</code>) and the <code>gradle</code> folder into the working directory.</li>
+          <li>Transfer the Gradle project files (<code>build.gradle</code>, <code>settings.gradle</code>) into the working directory.</li>
+          <li>Transfer the <code>src</code> folder containing your application source code into the working directory.</li>
+        </ul>
+      </li>
+      <li>Ensure the Gradle Wrapper has executable permissions using the <code>chmod +x gradlew</code> command.</li>
+      <li>Build the application using the Gradle Wrapper with the command: <code>./gradlew bootJar --no-daemon</code>.</li>
+    </ul>
+  </li>
+  <li>Stage 2 (Package):
+    <ul>
+      <li>Use any valid JVM-based base image with a JRE to create a lightweight runtime environment for your application.</li>
+      <li>Set the working directory inside the container to <code>/app</code>.</li>
+      <li>Use either the appropriate instruction to transfer the JAR file generated in the build stage (e.g., <code>/app/build/libs/hyper-web-app-0.0.1-SNAPSHOT.jar</code>) into the runtime stage directory as <code>app.jar</code>.</li>
+      <li>Expose port <code>8080</code>, which is the default port for Spring Boot applications.</li>
+      <li>Set the entry point to run the application using the command: <code>[&quot;java&quot;, &quot;-jar&quot;, &quot;app.jar&quot;]</code>.</li>
+    </ul>
+  </li>
+</ul>
+
+<p>You may use any valid tag or version for the images (e.g., <code>latest</code>, <code>21-jre</code>, <code>17</code>).</p>

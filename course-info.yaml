@@ -1,0 +1,7 @@
+type: hyperskill
+title: Run-Docker-Run
+language: English
+summary: Learn the basics of Docker and how to work with containers.
+programming_language: Kotlin
+content:
+  - Run-Docker-Run
