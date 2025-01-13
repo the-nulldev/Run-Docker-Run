@@ -74,10 +74,6 @@ class DockerTest : StageTest<String>() {
         // Count the number of `FROM` instructions
         val fromCount = dockerfileContent.lines().count { it.trim().startsWith("from ") }
 
-        // Ensure there are at least two `FROM` instructions for multi-stage builds
-        // the first `FROM` instruction is for the base image and the second `FROM` instruction is for the final image
-        // the first `FROM` instruction should be the build stage and the second `FROM` instruction should be the run stage
-        // check that it has a "AS" keyword to name the build stage
         return if (fromCount >= 2 && dockerfileContent.contains(" as ")) {
             CheckResult.correct()
         } else {
