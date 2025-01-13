@@ -26,7 +26,7 @@ class DockerCleanupTest : StageTest<String>() {
         // Check if the container is still running
         val isRunning = container["State"]?.contains("running", ignoreCase = true) == true
         if (isRunning) {
-            return CheckResult.wrong("The container created from the '$ancestorImage' image should be stopped!")
+            return CheckResult.wrong("All containers created from the '$ancestorImage' image should be stopped!")
         }
 
         return CheckResult.correct()
@@ -41,7 +41,7 @@ class DockerCleanupTest : StageTest<String>() {
 
         val containerExists = containers.any { it["Image"] == ancestorImage }
         if (containerExists) {
-            return CheckResult.wrong("The container created from the '$ancestorImage' image should be deleted!")
+            return CheckResult.wrong("All containers created from the '$ancestorImage' image should be deleted!")
         }
 
         return CheckResult.correct()

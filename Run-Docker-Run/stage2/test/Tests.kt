@@ -30,11 +30,15 @@ class DockerTest : StageTest<String>() {
         val dockerfileContent = dockerfile.readText().lowercase()
         val dockerfileLines = dockerfileContent.lines().filter { it.isNotBlank() }
 
-
-        // Check if all required instructions are present
         for (instruction in requiredInstructions) {
-            if (!dockerfileContent.contains(instruction.lowercase())) {
-                return CheckResult.wrong("The Dockerfile is missing the `$instruction` instruction!")
+            if (!dockerfileLines.any { it.startsWith(instruction.toLowerCase()) }) {
+                return when (instruction) {
+                    "WORKDIR" -> CheckResult.wrong("The Dockerfile does not have an instruction to set the working directory!")
+                    "RUN" -> CheckResult.wrong("The Dockerfile should include RUN commands for to install dependencies, set permissions, and build the app using Gradle!")
+                    "EXPOSE" -> CheckResult.wrong("The Dockerfile should expose port 8080 for the Spring Boot application!")
+                    "ENTRYPOINT" -> CheckResult.wrong("The Dockerfile should include an entrypoint to run the Spring Boot application!")
+                    else -> CheckResult.wrong("The Dockerfile is missing the required instruction: $instruction")
+                }
             }
         }
 
@@ -43,6 +47,15 @@ class DockerTest : StageTest<String>() {
             return CheckResult.wrong("The Dockerfile must include instructions to transfer files into the image!")
         }
 
+        val copyCount = dockerfileContent.lines().count { it.trim().startsWith("copy") || it.trim().startsWith("add") }
+        if (copyCount < 3) {
+            return CheckResult.wrong("The Dockerfile should include at least 3 instructions to transfer files into the image since the files are copied to different target directories!")
+        }
+
+        val runCount = dockerfileContent.lines().count { it.trim().startsWith("run") }
+        if (runCount < 2) {
+            return CheckResult.wrong("The Dockerfile should include at least 2 RUN commands to set permissions and build the app using Gradle!")
+        }
         return CheckResult.correct()
     }
 

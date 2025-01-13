@@ -24,8 +24,8 @@ class DockerTest : StageTest<String>() {
             return CheckResult.wrong("No running containers were found. Ensure that your container is running.")
         }
 
-        // Find the container using the specified image
-        val container = runningContainers.find { it["Image"] == ancestorImage }
+        // Find the container using the specified image (use startswith to match the image name with or without the tag)
+        val container = runningContainers.find { it["Image"]?.startsWith(ancestorImage) == true }
 
         if (container == null) {
             return CheckResult.wrong("Couldn't find a running container created from the '$ancestorImage' image!")
